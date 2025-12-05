@@ -13,3 +13,4 @@ cython
 ninja
 setuptools
 wheel
+gevent

@@ -1,7 +1,11 @@
-flask
+python==3.12.6
+Flask
 pandas
-numpy
-scikit-learn
-xgboost
-catboost
 joblib
+matplotlib
+seaborn
+scikit-learn
+catboost
+fpdf
+numpy
+Werkzeug

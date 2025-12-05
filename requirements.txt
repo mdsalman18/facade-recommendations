@@ -9,7 +9,7 @@ fpdf==1.7.2
 numpy==1.26.4
 Werkzeug==2.3.7
 gunicorn==21.2.0
-cython==3.0.0
-ninja==1.10.2   # Add ninja for building C extensions
+cython==3.0.0  # Add this for compiling C extensions
+ninja==1.10.2   # Ninja can help in building some C++ dependencies
 setuptools>=58.0.4
 wheel>=0.36.2

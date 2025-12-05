@@ -9,4 +9,4 @@ fpdf==1.7.2
 numpy==1.26.4
 Werkzeug==2.3.7
 gunicorn==21.2.0
-pip install --upgrade pip setuptools wheel
+

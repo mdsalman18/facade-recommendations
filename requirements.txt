@@ -1,15 +1,15 @@
-Flask==2.3.3
-pandas==2.1.1
-joblib==1.3.2
-matplotlib==3.8.0
-seaborn==0.12.2
-scikit-learn==1.3.2
-catboost==1.2
-fpdf==1.7.2
-numpy==1.26.4
-Werkzeug==2.3.7
-gunicorn==21.2.0
-cython==3.0.0  # Add this for compiling C extensions
-ninja==1.10.2   # Ninja can help in building some C++ dependencies
-setuptools>=58.0.4
-wheel>=0.36.2
+Flask
+pandas
+joblib
+matplotlib
+seaborn
+scikit-learn
+catboost
+fpdf
+numpy
+Werkzeug
+gunicorn
+cython
+ninja
+setuptools
+wheel

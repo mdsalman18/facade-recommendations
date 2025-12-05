@@ -10,4 +10,6 @@ numpy==1.26.4
 Werkzeug==2.3.7
 gunicorn==21.2.0
 cython==3.0.0
-ninja==1.10.2
+ninja==1.10.2   # Add ninja for building C extensions
+setuptools>=58.0.4
+wheel>=0.36.2

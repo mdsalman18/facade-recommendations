@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Facade Material Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/recommendation.css') }}">
+
+</head>
+<body>
+<div class="container">
+    <h1>Top 3 Recommended Materials</h1>
+
+    <!-- Top 3 Materials Table -->
+    <div class="material-table-container">
+        <table class="material-table">
+            <thead>
+                <tr>
+                    <th>Material Type</th>
+                    <th>Suitability Score</th>
+                    <th>Thermal Performance</th>
+                    <th>Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for material in top_materials %}
+                <tr>
+                    <td>{{ material.material_type }}</td>
+                    <td>{{ material.score | round(2) }}</td>
+                    <td>{{ material.thermal | round(2) }}</td>
+                    <td>{{ material.cost | round(2) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Best Material Summary -->
+    <div class="recommendation-section">
+        <h2>Best Material Summary</h2>
+        <p>Sustainability Score: {{ suitability_score }}</p>
+        <p>Thermal Performance: {{ thermal_perf }}</p>
+        <p>Cost Estimate: {{ cost_est }}</p>
+        <a href="{{ url_for('download_pdf') }}">
+            <button id="download-pdf-btn">Download PDF</button>
+        </a>
+    </div>
+
+    <!-- Charts Row: Bar Chart + Cost vs Thermal Performance -->
+    <div class="charts-row">
+        <div class="chart-container">
+            <h3>Bar Chart Comparison</h3>
+            {% if chart_bar %}
+            <img src="data:image/png;base64,{{ chart_bar }}" alt="Bar Chart">
+            {% endif %}
+        </div>
+
+        <div class="chart-container">
+            <h3>Cost vs Thermal Performance</h3>
+            {% if chart_scatter %}
+            <img src="data:image/png;base64,{{ chart_scatter }}" alt="Scatter Chart">
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Multi-Material Chart Centered -->
+    <div class="multi-chart-container">
+        <h3>Multi-Material Comparison</h3>
+        {% if chart_multi %}
+        <img src="data:image/png;base64,{{ chart_multi }}" alt="Multi Material Chart">
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>

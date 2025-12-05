@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Facade Material Recommendation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Facade Material Recommendation System</h1>
+    
+    <form method="POST" action="{{ url_for('index') }}">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Location:</label>
+                <input type="text" class="form-control" name="location" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label>Climate Zone:</label>
+                <select class="form-select" name="climate_zone" required>
+                    <option value="hot">Hot</option>
+                    <option value="moderate">Moderate</option>
+                    <option value="coastal">Coastal</option>
+                    <option value="cold">Cold</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Building Type:</label>
+                <select class="form-select" name="building_type" required>
+                    <option value="Commercial">Commercial</option>
+                    <option value="Residential">Residential</option>
+                    <option value="Hospital">Hospital</option>
+                    <option value="Industrial">Industrial</option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label>Floor Count:</label>
+                <input type="number" class="form-control" name="floor_count" min="1" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Orientation:</label>
+                <select class="form-select" name="orientation" required>
+                    <option value="north">North</option>
+                    <option value="south">South</option>
+                    <option value="east">East</option>
+                    <option value="west">West</option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label>Max Cost per sqm:</label>
+                <input type="number" class="form-control" name="max_cost_per_sqm" step="0.01" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Required U-Value:</label>
+                <input type="number" class="form-control" name="required_u_value" step="0.01" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label>Required SHGC:</label>
+                <input type="number" class="form-control" name="required_shgc" step="0.01" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Required VLT:</label>
+                <input type="number" class="form-control" name="required_vlt" step="0.01" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label>Budget Level:</label>
+                <select class="form-select" name="budget_level" required>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Preferred Material:</label>
+                <input type="text" class="form-control" name="aesthetic_preference">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label>Acoustic Requirement:</label>
+                <select class="form-select" name="acoustic_requirement" required>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Fire Rating Requirement:</label>
+                <select class="form-select" name="fire_rating_requirement" required>
+                    <option value="A2">A2</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label>Facade Area (sqm):</label>
+                <input type="number" class="form-control" name="facade_area_sqm" step="0.01" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Average Temperature (°C):</label>
+                <input type="number" class="form-control" name="avg_temp_c" step="0.1" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label>Average Humidity (%):</label>
+                <input type="number" class="form-control" name="avg_humidity_pct" step="0.1" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Average Rainfall (mm/year):</label>
+                <input type="number" class="form-control" name="avg_rainfall_mm" step="0.1" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label>Sun Exposure:</label>
+                <select class="form-select" name="solar_exposure" required>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Thermal Insulation Required:</label>
+                <select class="form-select" name="thermal_insulation_required" required>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label>Wind Load Level:</label>
+                <select class="form-select" name="wind_load_level" required>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary btn-lg">Get Recommendation</button>
+        </div>
+    </form>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

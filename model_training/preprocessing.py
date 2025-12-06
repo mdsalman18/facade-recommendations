@@ -1,7 +1,3 @@
-# preprocessing.py
-# ----------------
-# Handles dataset loading, preprocessor fitting, and input transformation
-
 import os
 import pandas as pd
 import joblib
@@ -74,6 +70,7 @@ def fit_preprocessor(df, phase="phase2"):
     for col in categorical_features:
         if col in df.columns:
             df[col] = df[col].fillna('unknown')
+            df[col] = df[col].astype(str).str.lower()  # <-- convert categorical to lowercase
 
     # Create preprocessor
     preprocessor = ColumnTransformer(
@@ -107,6 +104,12 @@ def preprocess_input(df, preprocessor):
     """Transform input dataframe using fitted preprocessor."""
     if df.empty:
         raise ValueError("Input dataframe is empty")
+    
+    # Convert categorical columns in input to lowercase
+    cat_cols = df.select_dtypes(include="object").columns
+    for col in cat_cols:
+        df[col] = df[col].astype(str).str.lower()
+    
     return preprocessor.transform(df)
 
 

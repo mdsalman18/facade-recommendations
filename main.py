@@ -45,12 +45,20 @@ MATERIAL_FEATURES = [
 def index():
     if request.method == 'POST':
         input_data = {key: request.form.get(key) for key in request.form}
+
+        # Convert numeric inputs
         for key in NUMERIC_KEYS:
             if input_data.get(key):
                 try:
                     input_data[key] = float(input_data[key])
                 except ValueError:
                     input_data[key] = 0.0
+
+        # Convert string/categorical inputs to lowercase
+        for key, value in input_data.items():
+            if key not in NUMERIC_KEYS and isinstance(value, str):
+                input_data[key] = value.lower()
+
         return redirect(url_for('recommendation', **input_data))
     return render_template('index.html')
 
@@ -61,9 +69,16 @@ def index():
 @app.route('/recommendation')
 def recommendation():
     input_data = request.args.to_dict()
+
+    # Convert numeric inputs
     for key in NUMERIC_KEYS:
         if input_data.get(key):
             input_data[key] = float(input_data[key])
+
+    # Convert all string inputs to lowercase
+    for key, value in input_data.items():
+        if key not in NUMERIC_KEYS and isinstance(value, str):
+            input_data[key] = value.lower()
 
     # -----------------------------
     # Phase-2: Material Comparison
@@ -92,9 +107,9 @@ def recommendation():
     top_materials = []
     seen_types = set()
     for p in preds_sorted:
-        if p['material_type'] not in seen_types:
+        if p['material_type'].lower() not in seen_types:
             top_materials.append(p)
-            seen_types.add(p['material_type'])
+            seen_types.add(p['material_type'].lower())
         if len(top_materials) == 3:
             break
 

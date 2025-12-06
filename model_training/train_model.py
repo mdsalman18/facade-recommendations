@@ -96,6 +96,12 @@ def get_best_model(X_train, X_test, y_train, y_test):
 # -----------------------------
 def train_all_targets():
     df = load_dataset("dataset/facade_material_dataset.csv")
+
+    # Convert all categorical columns to lowercase
+    cat_cols = df.select_dtypes(include="object").columns
+    for col in cat_cols:
+        df[col] = df[col].astype(str).str.lower()
+
     feature_cols = [col for col in df.columns if col not in ["suitability_score",
                                                              "thermal_gap_u_value",
                                                              "total_cost_estimate"]]

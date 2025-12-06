@@ -8,7 +8,7 @@ def get_top_glass_materials(input_data=None, top_n=5):
     """
     Return top N glass materials for the customer, considering duplicates
     and input constraints.
-    
+
     input_data: dict containing customer's requirements
     """
     if not os.path.exists(GLASS_DATASET_PATH):
@@ -28,9 +28,15 @@ def get_top_glass_materials(input_data=None, top_n=5):
             raise ValueError(f"Missing required column: {col}")
 
     # Convert numeric columns to float
-    numeric_cols = ["u_value", "shgc", "vlt", "durability_years", "acoustic_rw", "cost_per_sqm", "thickness_mm", "maintenance_freq_per_year"]
+    numeric_cols = ["u_value", "shgc", "vlt", "durability_years", "acoustic_rw",
+                    "cost_per_sqm", "thickness_mm", "maintenance_freq_per_year"]
     for col in numeric_cols:
         df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0)
+
+    # Convert categorical/string columns to lowercase
+    str_cols = ["glass_type", "fire_rating", "solar_control_coating", "environmental_suitability"]
+    for col in str_cols:
+        df[col] = df[col].astype(str).str.lower()
 
     # Weighted score
     df["thermal_score"] = 100 - (df["u_value"] * 20)
@@ -51,20 +57,23 @@ def get_top_glass_materials(input_data=None, top_n=5):
 
     # Apply customer constraints if input_data is provided
     if input_data:
+        # Convert string inputs to lowercase
+        input_data_lower = {k: v.lower() if isinstance(v, str) else v for k, v in input_data.items()}
+
         # Filter by max cost
-        if "max_cost_per_sqm" in input_data:
-            df = df[df["cost_per_sqm"] <= float(input_data["max_cost_per_sqm"])]
+        if "max_cost_per_sqm" in input_data_lower:
+            df = df[df["cost_per_sqm"] <= float(input_data_lower["max_cost_per_sqm"])]
         # Filter by U-Value
-        if "required_u_value" in input_data:
-            df = df[df["u_value"] <= float(input_data["required_u_value"])]
+        if "required_u_value" in input_data_lower:
+            df = df[df["u_value"] <= float(input_data_lower["required_u_value"])]
         # Filter by SHGC
-        if "required_shgc" in input_data:
-            df = df[df["shgc"] <= float(input_data["required_shgc"])]
+        if "required_shgc" in input_data_lower:
+            df = df[df["shgc"] <= float(input_data_lower["required_shgc"])]
         # Filter by VLT
-        if "required_vlt" in input_data:
-            df = df[df["vlt"] >= float(input_data["required_vlt"])]
+        if "required_vlt" in input_data_lower:
+            df = df[df["vlt"] >= float(input_data_lower["required_vlt"])]
         # Filter by acoustic requirement
-        if "acoustic_requirement" in input_data and input_data["acoustic_requirement"].lower() == "yes":
+        if "acoustic_requirement" in input_data_lower and input_data_lower["acoustic_requirement"] == "yes":
             df = df[df["acoustic_rw"] >= 40]  # Example threshold
 
     # Sort by final score descending

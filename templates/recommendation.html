@@ -4,37 +4,106 @@
     <meta charset="UTF-8">
     <title>Facade Material Recommendations</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/recommendation.css') }}">
-
 </head>
 <body>
 <div class="container">
     <h1>Top 3 Recommended Materials</h1>
 
-    <!-- Top 3 Materials Table -->
-    <div class="material-table-container">
-        <table class="material-table">
-            <thead>
-                <tr>
-                    <th>Material Type</th>
-                    <th>Suitability Score</th>
-                    <th>Thermal Performance</th>
-                    <th>Cost</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for material in top_materials %}
-                <tr>
-                    <td>{{ material.material_type }}</td>
-                    <td>{{ material.score | round(2) }}</td>
-                    <td>{{ material.thermal | round(2) }}</td>
-                    <td>{{ material.cost | round(2) }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    {% if budget_warning %}
+    <div class="alert alert-warning" role="alert">
+        Some top recommended materials exceed your maximum budget!
     </div>
+    {% endif %}
 
-    <!-- Best Material Summary -->
+    {% if not top_materials %}
+        <p>No material recommendations available.</p>
+    {% endif %}
+
+    {% if top_materials %}
+        <div class="material-table-container">
+            <table class="material-table">
+                <thead>
+                    <tr>
+                        <th>Material Type</th>
+                        <th>Suitability Score</th>
+                        <th>Thermal Performance</th>
+                        <th>Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for material in top_materials %}
+                    <tr>
+                        <td>{{ material.material_type }}</td>
+                        <td>{{ material.score | round(2) }}</td>
+                        <!-- Thermal indicator -->
+                        <td>
+                            {% if material.thermal_indicator == 'green' %}
+                                <span style="color:green;font-weight:bold">{{ material.thermal | round(2) }}</span>
+                            {% else %}
+                                <span style="color:red;font-weight:bold">{{ material.thermal | round(2) }}</span>
+                            {% endif %}
+                        </td>
+                        <!-- Cost indicator -->
+                        <td>
+                            {% if material.cost_indicator == 'green' %}
+                                <span style="color:green;font-weight:bold">{{ material.cost | round(2) }}</span>
+                            {% else %}
+                                <span style="color:red;font-weight:bold">{{ material.cost | round(2) }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+    {% if glass_recommendations %}
+    <div class="glass-recommendation-section">
+        <h2>Top Glass Options (Detailed Recommendation)</h2>
+        <div class="material-table-container glass-table-container">
+            <table class="material-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Score</th>
+                        <th>U-Value</th>
+                        <th>SHGC</th>
+                        <th>VLT</th>
+                        <th>Acoustic</th>
+                        <th>Fire Rating</th>
+                        <th>Cost</th>
+                        <th>Thickness</th>
+                        <th>Maintenance</th>
+                        <th>Solar Coating</th>
+                        <th>Impact</th>
+                        <th>Environmental</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for glass in glass_recommendations %}
+                    <tr>
+                        <td>{{ glass.material_name }}</td>
+                        <td>{{ glass.score | round(2) }}</td>
+                        <td>{{ glass.material_u_value }}</td>
+                        <td>{{ glass.material_shgc }}</td>
+                        <td>{{ glass.material_vlt_percent }}</td>
+                        <td>{{ glass.acoustic_rating_rw }}</td>
+                        <td>{{ glass.fire_rating }}</td>
+                        <td>{{ glass.cost_per_sqm | round(2) }}</td>
+                        <td>{{ glass.thickness_mm }}</td>
+                        <td>{{ glass.maintenance_freq_per_year }}</td>
+                        <td>{{ glass.solar_control_coating }}</td>
+                        <td>{{ glass.impact_resistance }}</td>
+                        <td>{{ glass.environmental_suitability }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
     <div class="recommendation-section">
         <h2>Best Material Summary</h2>
         <p>Sustainability Score: {{ suitability_score }}</p>
@@ -45,15 +114,14 @@
         </a>
     </div>
 
-    <!-- Charts Row: Bar Chart + Cost vs Thermal Performance -->
+    <!-- Charts Section -->
     <div class="charts-row">
         <div class="chart-container">
-            <h3>Bar Chart Comparison</h3>
+            <h3>Top Materials Bar Chart</h3>
             {% if chart_bar %}
             <img src="data:image/png;base64,{{ chart_bar }}" alt="Bar Chart">
             {% endif %}
         </div>
-
         <div class="chart-container">
             <h3>Cost vs Thermal Performance</h3>
             {% if chart_scatter %}
@@ -62,13 +130,13 @@
         </div>
     </div>
 
-    <!-- Multi-Material Chart Centered -->
     <div class="multi-chart-container">
         <h3>Multi-Material Comparison</h3>
         {% if chart_multi %}
         <img src="data:image/png;base64,{{ chart_multi }}" alt="Multi Material Chart">
         {% endif %}
     </div>
+
 </div>
 </body>
 </html>
